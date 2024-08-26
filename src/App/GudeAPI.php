@@ -94,8 +94,7 @@ class GudeAPI implements InterfaceGudeAPI
         if ($path->isCorrectPATH() ) {
             $returnedStatus = true;
             
-            if ( $action !== null ) 
-            {
+            if ($action !== null ) {
                 // Вызываем callback-функцию пользователя и Передаём в неё массив с некоторыми параметрами для пользователя
                 $action(
                     [
