@@ -1,0 +1,27 @@
+{
+    "name": "maxproger338/gudeapi",
+    "type": "library",
+    "description": "GudeAPI - это простая библиотека на PHP, для создания WEB-API",
+    "license": "MIT",
+    "homepage": "https://github.com/MaxProger338/GudeAPI",
+    "authors": [
+        {
+            "name": "MaxProger338",
+            "email": "maksproger0309@mail.ru",
+            "homepage": "https://github.com/MaxProger338/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": ">=3.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "GudeAPI\\":        "src/App/",
+            "GudeAPIConfigs\\": "src/Configs/"
+        }
+    }
+}
