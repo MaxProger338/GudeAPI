@@ -22,6 +22,9 @@ interface InterfaceGudeAPI
     // Получить IdentifierInRequestPath (геттер)
     public function getIdentifierInRequestPath(): string | null;
 
+    // Получить RemoveFileName (геттер)
+    public function getRemoveFileName(): bool;
+
     // Функция для работы в режиме PATH
     public function PATH(HTTPMethod $method, string $postfixInRequestPath, callable | null $action = null): bool;
 };

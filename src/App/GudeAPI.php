@@ -18,8 +18,12 @@ class GudeAPI implements InterfaceGudeAPI
 {
     // Здесь будет храниться объект RequestProperties, в котором лежат начальные параметры конфигурации API 
     private RequestProperties | null $_requestProperties       = null;
+
     private RequestTypeNames  | null $_requestType             = null;
+
     private string            | null $_identifierInRequestPath = null;
+
+    private bool              | null $_removeFileName          = null; 
 
     public function __construct(RequestProperties | null $requestProperties = null)
     {
@@ -38,6 +42,7 @@ class GudeAPI implements InterfaceGudeAPI
             case RequestTypeNames::PATH:
                 $this->_requestType             = $requestProperties->getRequestType();
                 $this->_identifierInRequestPath = $requestProperties->getIdentifierInRequestPath();
+                $this->_removeFileName          = $requestProperties->getRemoveFileName();
                 break;
 
             default:
@@ -71,6 +76,11 @@ class GudeAPI implements InterfaceGudeAPI
         return $this->_identifierInRequestPath;
     }
 
+    public function getRemoveFileName(): bool
+    {
+        return $this->_removeFileName;
+    }
+
     public function PATH(HTTPMethod $method, string $postfixInRequestPath, callable | null $action = null): bool
     {
         if ( $this->_requestType === null ) 
@@ -82,7 +92,7 @@ class GudeAPI implements InterfaceGudeAPI
         $returnedStatus = false;
 
         // Создаём и Инициализируем объект для работы с API в режиме PATH, передав в него параметры для его работы 
-        $path = new PATH($method, $this->_identifierInRequestPath, $postfixInRequestPath);
+        $path = new PATH($method, $this->_identifierInRequestPath, $postfixInRequestPath, $this->getRemoveFileName());
         // Если пути в запросе совпадают с нашими IdentifierInRequestPath и PostfixInRequestPath, тогда идём дальше и радуемся :) 
         if ( $path->isCorrectPATH() ) 
         {

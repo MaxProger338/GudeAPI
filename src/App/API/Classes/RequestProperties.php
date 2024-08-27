@@ -16,6 +16,7 @@ class RequestProperties implements InterfaceRequestProperties
 {
     private RequestTypeNames | null $_requestType             = null;
     private string           | null $_identifierInRequestPath = null;
+    private bool             | null $_removeFileName          = null;
 
     public function __construct(array $properties)
     {
@@ -30,9 +31,16 @@ class RequestProperties implements InterfaceRequestProperties
     
         if ( !($properties["RequestType"] instanceof RequestTypeNames) ) 
             throw new InvalidTypeOfAttribute("RequestType");
+
+        if ( !key_exists("RemoveFileName", $properties) ) 
+            throw new NotFoundKeyInArray("RemoveFileName");
+
+        if ( !AttributeFunctions::checkType($properties["RemoveFileName"], ["boolean"]) ) 
+            throw new InvalidTypeOfAttribute("RemoveFileName");
     
         $this->_identifierInRequestPath = $properties["IdentifierInRequestPath"];
         $this->_requestType             = $properties["RequestType"];
+        $this->_removeFileName          = $properties["RemoveFileName"];
     }
 
     public function getIdentifierInRequestPath(): string | null
@@ -43,5 +51,10 @@ class RequestProperties implements InterfaceRequestProperties
     public function getRequestType(): RequestTypeNames
     {
         return $this->_requestType;
+    }
+
+    public function getRemoveFileName(): bool
+    {
+        return $this->_removeFileName;
     }
 };

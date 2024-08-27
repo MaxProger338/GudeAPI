@@ -13,4 +13,7 @@ interface InterfaceRequestProperties
 
     // Получить RequestType (геттер)
     public function getRequestType(): RequestTypeNames;
+
+    // Получить RemoveFileName (геттер)
+    public function getRemoveFileName(): bool;
 };

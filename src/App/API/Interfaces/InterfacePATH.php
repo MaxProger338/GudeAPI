@@ -31,6 +31,9 @@ interface InterfacePATH
     // Получить Postfix (геттер)
     public function getPostfix(): string | null;
 
+    // Получить RemoveFileName (геттер)
+    public function getRemoveFileName(): bool;
+
     // Получить массив со всеми динамическими элементами (геттер)
     public function getDynamicElements(): array;
 

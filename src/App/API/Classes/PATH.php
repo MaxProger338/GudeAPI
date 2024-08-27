@@ -22,6 +22,8 @@ class PATH implements InterfacePATH
 
     private string     | null $_postfix                       = null;
 
+    private bool              $_removeFileName                = false;
+
     // Массив в котором будем хранить индекс и значение динамических параметров
     // ( "его имя" => "его значение")
     private array $_dynamicElements                           = [];
@@ -51,13 +53,15 @@ class PATH implements InterfacePATH
     private array $_deletedDynamicElementsFromQueryPostfix    = [];
 
     public function __construct(
-        HTTPMethod | null $method     = null, 
-        string     | null $identifier = null, 
-        string     | null $postfix    = null
+        HTTPMethod | null $method         = null, 
+        string     | null $identifier     = null, 
+        string     | null $postfix        = null,
+        bool              $removeFileName = true,
     ) {
         $this->_method = $method;
         $this->_identifier = $identifier;
         $this->_postfix = $postfix;
+        $this->_removeFileName = $removeFileName;
     }
 
     public function setHTTPMethod(HTTPMethod $method): void
@@ -88,6 +92,11 @@ class PATH implements InterfacePATH
     public function getPostfix(): string | null
     {
         return $this->_postfix;
+    }
+
+    public function getRemoveFileName(): bool
+    {
+        return $this->_removeFileName;
     }
 
     public function getDynamicElements(): array
@@ -318,7 +327,10 @@ class PATH implements InterfacePATH
             throw new InvalidProperty("Postfix");
 
         $splitQuery = ValidateRequestPath::removeEmptyElements(explode("/", $_GET[RequestConfig::VARIABLE_QUERY_NAME()]));
-        unset($splitQuery[0]);
+
+        if ( $this->_removeFileName )
+            unset($splitQuery[0]);
+
         $splitQuery = ArrayFunctions::decorateIndexesArray($splitQuery);
         
         $splitIdentifier = ValidateRequestPath::removeEmptyElements(explode("/", $this->_identifier));
