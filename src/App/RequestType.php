@@ -13,8 +13,8 @@ enum RequestType
     {
         return new RequestProperties(
             [
-            "RequestType" => RequestTypeNames::PATH,
-            "IdentifierInRequestPath" => $identifierInRequestPath,
+                "RequestType" => RequestTypeNames::PATH,
+                "IdentifierInRequestPath" => $identifierInRequestPath,
             ]
         );
     }

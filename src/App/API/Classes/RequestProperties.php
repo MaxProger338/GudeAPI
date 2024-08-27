@@ -19,21 +19,17 @@ class RequestProperties implements InterfaceRequestProperties
 
     public function __construct(array $properties)
     {
-        if (!key_exists("IdentifierInRequestPath", $properties) ) {
+        if ( !key_exists("IdentifierInRequestPath", $properties) ) 
             throw new NotFoundKeyInArray("IdentifierInRequestPath");
-        }
         
-        if (!AttributeFunctions::checkType($properties["IdentifierInRequestPath"], ["string", "NULL"]) ) {
+        if ( !AttributeFunctions::checkType($properties["IdentifierInRequestPath"], ["string", "NULL"]) ) 
             throw new InvalidTypeOfAttribute("IdentifierInRequestPath");
-        }
         
-        if (!key_exists("RequestType", $properties) ) {
+        if ( !key_exists("RequestType", $properties) ) 
             throw new NotFoundKeyInArray("RequestType");
-        }
     
-        if (!($properties["RequestType"] instanceof RequestTypeNames) ) {
+        if ( !($properties["RequestType"] instanceof RequestTypeNames) ) 
             throw new InvalidTypeOfAttribute("RequestType");
-        }
     
         $this->_identifierInRequestPath = $properties["IdentifierInRequestPath"];
         $this->_requestType             = $properties["RequestType"];

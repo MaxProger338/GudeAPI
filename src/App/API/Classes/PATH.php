@@ -111,14 +111,16 @@ class PATH implements InterfacePATH
         $params = [];
         foreach ($array as $key => $value)
         {
-            if (strlen($value) > 4) {
-                if ($value[0] === "{" 
+            if ( strlen($value) > 4 ) 
+            {
+                if ( $value[0] === "{" 
                     && $value[1] === ":"  
                     && $value[-2] === ":"  
                     && $value[-1] === "}"
                 ) {
                     $valueRes = $value;
-                    if ($trimSpecialSymbols) {
+                    if ( $trimSpecialSymbols ) 
+                    {
                         $valueRes = substr_replace($valueRes, '', 0, 1);
                         $valueRes = substr_replace($valueRes, '', 0, 1);
                         $valueRes = substr_replace($valueRes, '', strlen($valueRes) - 1, 1);
@@ -128,9 +130,8 @@ class PATH implements InterfacePATH
                     $params[$key] = $valueRes;
                 }
             }
-            if ($decorateIndexes) {
+            if ( $decorateIndexes ) 
                 $params = ArrayFunctions::decorateIndexesArray($params);
-            }
         }
         return $params;
     }
@@ -141,15 +142,17 @@ class PATH implements InterfacePATH
         $params = [];
         foreach ($array as $key => $value)
         {
-            if (strlen($value) === 5 ) {
-                if ($value[0] === "{" 
+            if ( strlen($value) === 5 ) 
+            {
+                if ( $value[0] === "{" 
                     && $value[1] === "|"  
                     && $value[2] === "*"  
                     && $value[3] === "|"  
                     && $value[4] === "}"
                 ) {
                     $valueRes = $value;
-                    if ($trimSpecialSymbols ) {
+                    if ( $trimSpecialSymbols ) 
+                    {
                         $valueRes = substr_replace($valueRes, '', 0, 1);
                         $valueRes = substr_replace($valueRes, '', 0, 1);
                         $valueRes = substr_replace($valueRes, '', strlen($valueRes) - 1, 1);
@@ -160,9 +163,8 @@ class PATH implements InterfacePATH
                 }
             }
 
-            if ($decorateIndexes ) {
+            if ( $decorateIndexes ) 
                 $params = ArrayFunctions::decorateIndexesArray($params);
-            }
         }
         return $params;
     }
@@ -170,29 +172,27 @@ class PATH implements InterfacePATH
     // Функция проверяет правильно идентификатора
     private function _isCorrectIdentifier(array $splitQuery, array $splitIdentifier, $splitPostfix): bool
     {
-        if (!empty($this->_getSpecialElements($splitIdentifier)) ) {
+        if ( !empty($this->_getSpecialElements($splitIdentifier)) ) 
             throw new SpecialParameterInIdentifier();
-        }
 
         // Если длинна запроса меньше чем у иденфикатора, выходим и дальше не идём
         // ( ["posts", "lang"] < ["posts", "lang", "PHP"] )
-        if (count($splitQuery) < count($splitIdentifier) ) {
+        if ( count($splitQuery) < count($splitIdentifier) ) 
             return false;
-        }
 
         // Перебираем наш иденфикатор
         foreach ($splitIdentifier as $index => $value)
         {
-            if (!empty($this->_getDynamicElements([$value])) ) {
+            if ( !empty($this->_getDynamicElements([$value])) ) 
+            {
                 // TODO: JUST THINK!!!
-                if (array_count_values($this->_getDynamicElements($splitIdentifier, false))[$this->_getDynamicElements([$value], false, false)[0]] > 1 ) {
+                if ( array_count_values($this->_getDynamicElements($splitIdentifier, false))[$this->_getDynamicElements([$value], false, false)[0]] > 1 ) 
                     return false;
-                }
                 
-                if (in_array($this->_getDynamicElements([$value], false, false)[0], $splitPostfix) ) {
-                    if (array_count_values($this->_getDynamicElements($splitPostfix, false))[$this->_getDynamicElements([$value], false, false)[0]] > 1 ) {
+                if ( in_array($this->_getDynamicElements([$value], false, false)[0], $splitPostfix) ) 
+                {
+                    if ( array_count_values($this->_getDynamicElements($splitPostfix, false))[$this->_getDynamicElements([$value], false, false)[0]] > 1 ) 
                         return false;
-                    }
                 }
 
                 // Создаём копию
@@ -217,9 +217,8 @@ class PATH implements InterfacePATH
                 // Если всё же параметр идентификатора статичен,
                 // то сравниваем его с тем же элементом по индексу у запроса
                 // Если он не равен ему, то выходим и не идём дальше
-                if ($value !== $splitQuery[$index]) {
+                if ( $value !== $splitQuery[$index]) 
                     return false;
-                }
             }
         }
 
@@ -231,20 +230,21 @@ class PATH implements InterfacePATH
     {
         // Если длинна постфикса запроса меньше чем у постфикса, выходим и дальше не идём
         // ( ["posts", "lang"] < ["posts", "lang", "PHP"] )
-        if (count($splitQueryPostfix) < count($splitPostfix) ) {
-            if (empty($this->_getSpecialElements($splitPostfix)) ) {
+        if ( count($splitQueryPostfix) < count($splitPostfix) ) 
+        {
+            if ( empty($this->_getSpecialElements($splitPostfix)) ) 
                 return false;
-            }
         }
 
         // Если длинна постфикса запроса больше чем чем у постфикса,
         // нет параметра {|*|} и идентификатор и постфикс не пустые,
         // выходим и дальше не идём (возможно это надо регулировать)
-        if (count($splitQueryPostfix) > count($splitPostfix) ) {
-            if (empty($this->_getSpecialElements($splitPostfix)) ) {
-                if (!empty($splitIdentifier) && !empty($splitPostfix) ) {
+        if ( count($splitQueryPostfix) > count($splitPostfix) ) 
+        {
+            if ( empty($this->_getSpecialElements($splitPostfix)) ) 
+            {
+                if ( !empty($splitIdentifier) && !empty($splitPostfix) ) 
                     return false;
-                }
             }
         }
 
@@ -252,17 +252,18 @@ class PATH implements InterfacePATH
         foreach ($splitPostfix as $index => $value)
         {
             // Если это специальный параметр
-            if (!empty($this->_getSpecialElements([$value])) ) {
+            if ( !empty($this->_getSpecialElements([$value])) ) 
+            {
                 $specialElementIndex = $index;
                 $this->_specialElements[$index] = $value;
                 break;
             }
 
             // Если параметр динамичен
-            else if (!empty($this->_getDynamicElements([$value])) ) {
-                if (!isset($splitQueryPostfix[$index]) ) {
+            else if ( !empty($this->_getDynamicElements([$value])) ) 
+            {
+                if ( !isset($splitQueryPostfix[$index]) ) 
                     return false;
-                }
 
                 // Создаём копию
                 $trimElement = $value;
@@ -283,21 +284,18 @@ class PATH implements InterfacePATH
                 // Если всё же параметр постфикса статичен,
                 // то сравниваем его с тем же элементом по индексу у постфикса запроса
                 // Если он не равен ему, то выходим и не идём дальше
-                if (!isset($splitQueryPostfix[$index]) ) {
+                if ( !isset($splitQueryPostfix[$index]) ) 
                     return false;
-                }
 
-                if ($value !== $splitQueryPostfix[$index] ) {
+                if ( $value !== $splitQueryPostfix[$index] ) 
                     return false;
-                }
             }
         }
 
         foreach ( $splitQueryPostfix as $index => $value )
         {
-            if ($index === $specialElementIndex || $index > $specialElementIndex ) {
+            if ( $index === $specialElementIndex || $index > $specialElementIndex ) 
                 $this->_elementsAfterSpecialElement[] = $value;
-            }
         }
 
         return true;
@@ -310,17 +308,14 @@ class PATH implements InterfacePATH
         $this->_specialElements             = [];
         $this->_elementsAfterSpecialElement = [];
 
-        if ($this->_method === null ) {
+        if ( $this->_method === null ) 
             throw new InvalidProperty("HTTPMethod");
-        }
 
-        if ($this->_identifier === null ) {
+        if ( $this->_identifier === null ) 
             throw new InvalidProperty("Identifier");
-        }
 
-        if ($this->_postfix === null ) {
+        if ( $this->_postfix === null ) 
             throw new InvalidProperty("Postfix");
-        }
 
         $splitQuery = ValidateRequestPath::removeEmptyElements(explode("/", $_GET[RequestConfig::VARIABLE_QUERY_NAME()]));
         unset($splitQuery[0]);
@@ -334,8 +329,10 @@ class PATH implements InterfacePATH
         // (если все пути совпадают, то помещаем и возвразаем true, иначе false)
         $returnedStatus = false;
 
-        if (($this->_method === HTTPMethod::ALL_METHODS) ? true : ($this->_method->value === $_SERVER["REQUEST_METHOD"]) ) {
-            if ($this->_isCorrectIdentifier($splitQuery, $splitIdentifier, $splitPostfix) ) {
+        if ( ($this->_method === HTTPMethod::ALL_METHODS) ? true : ($this->_method->value === $_SERVER["REQUEST_METHOD"]) ) 
+        {
+            if ( $this->_isCorrectIdentifier($splitQuery, $splitIdentifier, $splitPostfix) ) 
+            {
                 // ============= ДИНАМИЧЕСКИЕ ПАРАМЕТРЫ =============
                 // Сначало решаем дела с динамическими параметрами ЗАПРОСА и ИДЕНТИФИКАТОРА
 
@@ -359,10 +356,12 @@ class PATH implements InterfacePATH
                 // Сдесь уже решаем дела с оставшимися параметрами ЗАПРОСА И ИДЕНТИФИКАТОРА
 
                 // Если в нушем пути есть идентификатор
-                if (ArrayFunctions::compareArrays($splitQuery, $splitIdentifier) ) {
+                if ( ArrayFunctions::compareArrays($splitQuery, $splitIdentifier) ) 
+                {
                     // Вырезаем из нашего пути идентификатор ( "posts/langs/PHP" -> "PHP", где posts/langs - идентификатор, а PHP - постфикс )
                     $splitQueryPostfix = ArrayFunctions::unsetExclusiveElements($splitQuery, $splitIdentifier);
-                    if ($splitQueryPostfix !== null ) {
+                    if ( $splitQueryPostfix !== null ) 
+                    {
                         // Выравниваем индексы ( ["3" => "a", "5" => "b", "27" => "c"] -> ["1" => "a", "2" => "b", "3" => "c"] )
                         $splitQueryPostfix = ArrayFunctions::decorateIndexesArray($splitQueryPostfix);
 
@@ -373,7 +372,8 @@ class PATH implements InterfacePATH
                         // Сдесь решаем дела с динамическими параметрами ПОСТФИКСА И ПОСТФИКСА ЗАПРОСА
                         
                         // Если всё ОК
-                        if ($this->_isCorrectPostfix($splitQueryPostfix, $splitPostfix, $splitIdentifier) ) {
+                        if ( $this->_isCorrectPostfix($splitQueryPostfix, $splitPostfix, $splitIdentifier) ) 
+                        {
                             // Удаляем динамические параметры из постфикса и постфикса запроса (Если они конечно же есть)
                             // и помещаем их в свои buf-массивы
                             $splitQueryPostfix = ArrayFunctions::unsetEveryElements(
@@ -397,9 +397,8 @@ class PATH implements InterfacePATH
                                 function ($key, $value) {
                                     global $isSpecialParam;
 
-                                    if (!empty($this->_getSpecialElements([$value])) ) {
+                                    if ( !empty($this->_getSpecialElements([$value])) ) 
                                         $isSpecialParam = true;
-                                    }
 
                                     return $isSpecialParam;
                                 }
@@ -407,7 +406,8 @@ class PATH implements InterfacePATH
 
                             // ============= ФИНАЛ =============
                             // Если в нашем обрезанном пути есть постфикс
-                            if (ArrayFunctions::compareArrays($splitQueryPostfix, $splitPostfix) ) {
+                            if ( ArrayFunctions::compareArrays($splitQueryPostfix, $splitPostfix) ) 
+                            {
                                 // Если всё совпадает, ставив в true
                                 $returnedStatus = true;
                             }

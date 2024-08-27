@@ -18,8 +18,8 @@ class ArrayFunctions implements InterfaceArrayFunctions
 
         foreach ($array as $key => $value)
         {
-            if ($condition($key, $value) ) { unset($returnedArray[$key]);
-            }
+            if ( $condition($key, $value) ) 
+                unset($returnedArray[$key]);
         }
         return $returnedArray;
     }
@@ -29,15 +29,15 @@ class ArrayFunctions implements InterfaceArrayFunctions
         $arrayDeletedIndexes = [];
         foreach ($array as $key => $value)
         {
-            if ($condition($key, $value) ) { $arrayDeletedIndexes[] = $key;
-            }
+            if ( $condition($key, $value) ) 
+                $arrayDeletedIndexes[] = $key;
         }
 
         $returnedArray = [];
         foreach ($array as $key => $value)
         {
-            if (!in_array($key, array_values($arrayDeletedIndexes)) ) { $returnedArray[$key] = $value;
-            }
+            if ( !in_array($key, array_values($arrayDeletedIndexes)) )
+                $returnedArray[$key] = $value;
         }
 
         return $returnedArray;
@@ -45,19 +45,16 @@ class ArrayFunctions implements InterfaceArrayFunctions
 
     public static function compareArrays(array $array1, array $array2): bool
     {
-        if (count($array1) < count($array2) ) {
+        if ( count($array1) < count($array2) ) 
             return false;
-        }
             
         foreach ($array2 as $key => $value) 
         {
-            if (!isset($array1[$key]) ) {
+            if ( !isset($array1[$key]) ) 
                 return false;
-            }
             
-            if ($value !== $array1[$key] ) {
+            if ( $value !== $array1[$key] ) 
                 return false;
-            }
         }
     
         return true;
@@ -65,15 +62,13 @@ class ArrayFunctions implements InterfaceArrayFunctions
 
     public static function unsetExclusiveElements(array $array1, array $array2): array | null
     {
-        if (count($array1) < count($array2) ) {
+        if ( count($array1) < count($array2) ) 
             return null;
-        }
 
         foreach ($array2 as $key => $value)
         {
-            if (!isset($array1[$key]) ) {
+            if ( !isset($array1[$key]) ) 
                 return null;
-            }
             
             unset($array1[$key]);
         }

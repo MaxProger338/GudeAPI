@@ -23,9 +23,8 @@ class GudeAPI implements InterfaceGudeAPI
 
     public function __construct(RequestProperties | null $requestProperties = null)
     {
-        if ($requestProperties === null ) {
+        if ( $requestProperties === null ) 
             return;
-        }
         
         $this->setRequestProperties($requestProperties);
     }
@@ -36,12 +35,12 @@ class GudeAPI implements InterfaceGudeAPI
 
         switch ($requestProperties->getRequestType())
         {
-        case RequestTypeNames::PATH:
-            $this->_requestType             = $requestProperties->getRequestType();
-            $this->_identifierInRequestPath = $requestProperties->getIdentifierInRequestPath();
-            break;
+            case RequestTypeNames::PATH:
+                $this->_requestType             = $requestProperties->getRequestType();
+                $this->_identifierInRequestPath = $requestProperties->getIdentifierInRequestPath();
+                break;
 
-        default:
+            default:
         }
     }
 
@@ -52,49 +51,45 @@ class GudeAPI implements InterfaceGudeAPI
 
     public function setIdentifierInRequestPath(string $identifierInRequestPath): void
     {
-        if ($this->_requestType === null ) {
+        if ( $this->_requestType === null ) 
             throw new InvalidProperty("RequestType");
-        }
 
-        if ($this->_requestType !== RequestTypeNames::PATH ) {
+        if ( $this->_requestType !== RequestTypeNames::PATH ) 
             throw new NotCorrectRequestType();
-        }
 
         $this->_identifierInRequestPath = $identifierInRequestPath;
     }
 
     public function getIdentifierInRequestPath(): string | null
     {
-        if ($this->_requestType === null ) {
+        if ( $this->_requestType === null ) 
             throw new InvalidProperty("RequestType");
-        }
 
-        if ($this->_requestType !== RequestTypeNames::PATH ) {
+        if ( $this->_requestType !== RequestTypeNames::PATH ) 
             throw new NotCorrectRequestType();
-        }
 
         return $this->_identifierInRequestPath;
     }
 
     public function PATH(HTTPMethod $method, string $postfixInRequestPath, callable | null $action = null): bool
     {
-        if ($this->_requestType === null ) {
+        if ( $this->_requestType === null ) 
             throw new InvalidProperty("RequestType");
-        }
 
-        if ($this->_identifierInRequestPath === null ) {
+        if ( $this->_identifierInRequestPath === null ) 
             throw new InvalidProperty("IdentifierInRequestPath");
-        }
 
         $returnedStatus = false;
 
         // Создаём и Инициализируем объект для работы с API в режиме PATH, передав в него параметры для его работы 
         $path = new PATH($method, $this->_identifierInRequestPath, $postfixInRequestPath);
         // Если пути в запросе совпадают с нашими IdentifierInRequestPath и PostfixInRequestPath, тогда идём дальше и радуемся :) 
-        if ($path->isCorrectPATH() ) {
+        if ( $path->isCorrectPATH() ) 
+        {
             $returnedStatus = true;
             
-            if ($action !== null ) {
+            if ( $action !== null ) 
+            {
                 // Вызываем callback-функцию пользователя и Передаём в неё массив с некоторыми параметрами для пользователя
                 $action(
                     [
